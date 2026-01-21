@@ -1,0 +1,6 @@
+@ApiExamenWillians_HostAddress = http://localhost:5209
+
+GET {{ApiExamenWillians_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

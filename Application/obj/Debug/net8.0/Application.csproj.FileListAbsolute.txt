@@ -1,0 +1,17 @@
+C:\Examen_Net\Application\bin\Debug\net8.0\Application.deps.json
+C:\Examen_Net\Application\bin\Debug\net8.0\Application.dll
+C:\Examen_Net\Application\bin\Debug\net8.0\Application.pdb
+C:\Examen_Net\Application\obj\Debug\net8.0\Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Examen_Net\Application\obj\Debug\net8.0\Application.AssemblyInfoInputs.cache
+C:\Examen_Net\Application\obj\Debug\net8.0\Application.AssemblyInfo.cs
+C:\Examen_Net\Application\obj\Debug\net8.0\Application.csproj.CoreCompileInputs.cache
+C:\Examen_Net\Application\obj\Debug\net8.0\Application.dll
+C:\Examen_Net\Application\obj\Debug\net8.0\refint\Application.dll
+C:\Examen_Net\Application\obj\Debug\net8.0\Application.pdb
+C:\Examen_Net\Application\obj\Debug\net8.0\ref\Application.dll
+C:\Examen_Net\Application\obj\Debug\net8.0\Application.csproj.AssemblyReference.cache
+C:\Examen_Net\Application\bin\Debug\net8.0\Domain.dll
+C:\Examen_Net\Application\bin\Debug\net8.0\Domain.pdb
+C:\Examen_Net\Application\obj\Debug\net8.0\Applicat.44B5EDA2.Up2Date
+C:\Examen_Net\Application\bin\Debug\net8.0\Infrastructure.dll
+C:\Examen_Net\Application\bin\Debug\net8.0\Infrastructure.pdb
