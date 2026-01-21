@@ -1,0 +1,152 @@
+CREATE DATABASE ExamenWillians;
+GO
+
+USE ExamenWillians;
+GO
+
+
+CREATE TABLE Logs (
+    Id INT PRIMARY KEY IDENTITY(1,1),
+    Metodo NVARCHAR(10) NOT NULL,      
+    Ruta NVARCHAR(500) NOT NULL,      
+    Usuario NVARCHAR(150) NULL,       
+    Fecha DATETIME NOT NULL,          
+    Ip NVARCHAR(50) NULL,             
+    StatusCode INT NOT NULL,          
+    DuracionMs INT NOT NULL,          
+    Error NVARCHAR(MAX) NULL          
+);
+GO
+
+CREATE TABLE Areas (
+    AreaId INT PRIMARY KEY IDENTITY(1,1),
+    Nombre NVARCHAR(100) NOT NULL,
+    Descripcion NVARCHAR(255),
+    Activo BIT DEFAULT 1
+);
+GO
+
+
+INSERT INTO Areas (Nombre, Descripcion, Activo)
+VALUES ('Sistemas', 'Departamento', 1);
+
+CREATE TABLE Empleados (
+    EmpleadoId INT PRIMARY KEY IDENTITY(1,1),
+    Nombre NVARCHAR(100) NOT NULL,
+    Apellidos NVARCHAR(200) NOT NULL,
+    FechaNacimiento DATETIME NOT NULL,
+    Email NVARCHAR(150),
+    AreaId INT NOT NULL,
+    FechaContratacion DATETIME NOT NULL,
+    CONSTRAINT FK_Empleado_Area FOREIGN KEY (AreaId) REFERENCES Areas(AreaId)
+);
+GO
+
+CREATE TABLE Roles (
+    RolId INT PRIMARY KEY IDENTITY(1,1),
+    Nombre NVARCHAR(50) NOT NULL UNIQUE,
+    Descripcion NVARCHAR(255)
+);
+GO
+
+CREATE TABLE Usuarios (
+    UsuarioId INT PRIMARY KEY IDENTITY(1,1),
+    Username NVARCHAR(50) UNIQUE NOT NULL,
+    PasswordHash NVARCHAR(MAX) NOT NULL,
+    RolId INT NOT NULL,
+    Activo BIT DEFAULT 1,
+    CONSTRAINT FK_Usuario_Rol FOREIGN KEY (RolId) REFERENCES Roles(RolId)
+);
+GO
+
+INSERT INTO Roles (Nombre, Descripcion) VALUES ('Admin', 'Acceso total');
+GO
+
+CREATE PROCEDURE sp_Empleado_Insert
+    @Nombre NVARCHAR(100),
+    @Apellidos NVARCHAR(200),
+    @FechaNacimiento DATETIME,
+    @Email NVARCHAR(150),
+    @AreaId INT,
+    @FechaContratacion DATETIME
+AS
+BEGIN
+    INSERT INTO Empleados (Nombre, Apellidos, FechaNacimiento, Email, AreaId, FechaContratacion)
+    VALUES (@Nombre, @Apellidos, @FechaNacimiento, @Email, @AreaId, @FechaContratacion);
+    SELECT SCOPE_IDENTITY(); 
+END
+GO
+
+CREATE PROCEDURE sp_Empleado_GetAll
+AS
+BEGIN
+    SELECT e.EmpleadoId, e.Nombre, e.Apellidos, e.FechaNacimiento, e.Email, e.AreaId, a.Nombre AS AreaNombre, e.FechaContratacion
+    FROM Empleados e
+    INNER JOIN Areas a ON e.AreaId = a.AreaId
+END
+GO
+
+CREATE PROCEDURE sp_Empleado_Update
+    @EmpleadoId INT,
+    @Nombre NVARCHAR(100),
+    @Apellidos NVARCHAR(200),
+    @FechaNacimiento DATETIME,
+    @Email NVARCHAR(150),
+    @AreaId INT,
+    @FechaContratacion DATETIME
+AS
+BEGIN
+    UPDATE Empleados 
+    SET Nombre = @Nombre, Apellidos = @Apellidos, FechaNacimiento = @FechaNacimiento, 
+        Email = @Email, AreaId = @AreaId, FechaContratacion = @FechaContratacion
+    WHERE EmpleadoId = @EmpleadoId;
+END
+GO
+
+CREATE PROCEDURE sp_Empleado_Delete
+    @EmpleadoId INT
+AS
+BEGIN
+    DELETE FROM Empleados WHERE EmpleadoId = @EmpleadoId;
+END
+GO
+
+CREATE PROCEDURE sp_Area_GetAll
+AS
+BEGIN
+    SELECT AreaId, Nombre, Descripcion, Activo FROM Areas;
+END
+GO
+
+CREATE PROCEDURE sp_Area_Insert
+    @Nombre NVARCHAR(100),
+    @Descripcion NVARCHAR(255),
+    @Activo BIT
+AS
+BEGIN
+    INSERT INTO Areas (Nombre, Descripcion, Activo)
+    VALUES (@Nombre, @Descripcion, @Activo);
+    SELECT SCOPE_IDENTITY(); 
+END
+GO
+
+CREATE PROCEDURE sp_Area_Update
+    @AreaId INT,
+    @Nombre NVARCHAR(100),
+    @Descripcion NVARCHAR(255),
+    @Activo BIT
+AS
+BEGIN
+    UPDATE Areas
+    SET Nombre = @Nombre, Descripcion = @Descripcion, Activo = @Activo
+    WHERE AreaId = @AreaId;
+END
+GO
+
+CREATE PROCEDURE sp_Area_Delete
+    @AreaId INT
+AS
+BEGIN
+    UPDATE Areas SET Activo = 0 WHERE AreaId = @AreaId
+END
+GO
